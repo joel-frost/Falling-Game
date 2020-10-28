@@ -26,5 +26,4 @@ class HealthPickup extends Obstacle
     y = -99;
   }
  
-  
 }

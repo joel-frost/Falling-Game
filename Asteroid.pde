@@ -31,9 +31,7 @@ class Asteroid extends Obstacle
     }
     
   }
-  
-
-  
+   
   void render()
   {    
     if (imgIndex >= asteroidsAnim.length)
@@ -55,22 +53,6 @@ class Asteroid extends Obstacle
   void renderNoAnim()
   {
     image(asteroidsAnim[0],x,y);
-  }
-  
-  
-  void collide(Astronaut astronaut)
-  {
-    if (astronaut.health>=40)
-    {
-      astronaut.health -= 40;
-    }
-    else
-    {
-     astronaut.health = 0; 
-    }
-    y = -99;
-  }
-  
-  
+  }  
   
 }

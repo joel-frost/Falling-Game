@@ -5,19 +5,11 @@ ArrayList<Obstacle> obstacles;
 
 
 PImage background;
-int bgY, bgSpeed, maxObstacles, score, scoreOffset, highScore;
+int bgY, score, highScore;
 int gamemode;
-
-/*
-------------
-Game Modes:
--2 = Reset
--1 = Death Screen
-0 = Splash Screen
-1 = Play game
-
-------------
-*/
+final int BGSPEED = 4;
+final int MAXOBSTACLES = 7;
+final int SCOREOFFSET = 1;
 
 void setup()
 {
@@ -36,7 +28,7 @@ void scrollBackground()
   
   image(background, 0, bgY); //draw background twice adjacent
   image(background, 0, bgY+background.height);
-  bgY-=bgSpeed;
+  bgY-=BGSPEED;
   if (bgY == -background.height)
   {
     bgY=0; //wrap background
@@ -45,56 +37,20 @@ void scrollBackground()
 
 void draw()
 {
-  if (gamemode == 0)
+  switch (gamemode)
   {
-   splashScreen(); 
-  }
-  if (gamemode == 1)
-  {
-    scrollBackground();
-    fill (255);
-    
-    if(frameCount % 5 == 0)
-      {
-         score += scoreOffset;
-      }
-      
-    textSize(15);
-    text("Score: " + score, 30, 40);
-  
-    astronaut.display();
-  
-    for (int i = 0; i < obstacles.size(); i++)
-    {
-      Obstacle o = obstacles.get(i);
-  
-      o.display();
-  
-      if (astronaut.collideDetect(o))
-      {
-        o.collide(astronaut);
-      }
-  
-      if (o.isDead())
-      {
-        obstacles.remove(i);
-        addObstacle();
-      }
-    }
-  
-    if (astronaut.isDead())
-    {
-      gamemode = -1;
-    }
-  }
-
-  if (gamemode == -1)
-  {
-    deathScreen();
-  }
-  if (gamemode == -2)
-  {
-    reset();
+   case -2:
+     reset();
+     break;
+   case -1:
+     deathScreen();
+     break;
+   case 0:
+     splashScreen();
+     break;
+   case 1:
+     playGame();
+     break;
   }
 }
 
@@ -129,7 +85,7 @@ Only spawns new obstacles if size of arraylist is below set variable. Can change
 */
 
 {
-  if (obstacles.size() < maxObstacles)
+  if (obstacles.size() < MAXOBSTACLES)
   {
 
     float pickUpChance = random(1);
@@ -172,6 +128,45 @@ void deathScreen()
 
 }
 
+void playGame()
+{
+    scrollBackground();
+    fill (255);
+    
+    if(frameCount % 5 == 0)
+      {
+         score += SCOREOFFSET;
+      }
+      
+    textSize(15);
+    text("Score: " + score, 30, 40);
+  
+    astronaut.display();
+  
+    for (int i = 0; i < obstacles.size(); i++)
+    {
+      Obstacle o = obstacles.get(i);
+  
+      o.display();
+  
+      if (astronaut.collideDetect(o))
+      {
+        o.collide(astronaut);
+      }
+  
+      if (o.isDead())
+      {
+        obstacles.remove(i);
+        addObstacle();
+      }
+    }
+  
+    if (astronaut.isDead())
+    {
+      gamemode = -1;
+    }
+}
+
 void calcHighScore()
 {
  if (score > highScore)
@@ -185,10 +180,7 @@ void calcHighScore()
 void reset()
 {
   bgY=0;
-  bgSpeed = 4;
-  maxObstacles = 7;
   score = 0;
-  scoreOffset = 1;
   astronaut = new Astronaut(200, 200);
 
   obstacles = new ArrayList<Obstacle>();

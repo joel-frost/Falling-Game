@@ -37,12 +37,17 @@ class Obstacle
    return false;
   }
   
-  void collide (Astronaut astronaut)
+  void collide(Astronaut astronaut)
   {
-    textSize(32);
-    text("word", 10, 30); 
+    if (astronaut.health>=40)
+    {
+      astronaut.health -= 40;
+    }
+    else
+    {
+     astronaut.health = 0; 
+    }
+    y = -99;
   }
-  
-  
-  
+
 }

@@ -15,7 +15,5 @@ class DiagAsteroid extends Asteroid
       speedX = -speedX;  
     }
   }
-  
-  
-  
+
 }
